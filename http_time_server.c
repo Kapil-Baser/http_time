@@ -7,8 +7,8 @@
     #include <ws2tcpip.h>
     #pragma comment(lib, "ws2_32.lib")      // If compiling using visual studio compiler
 #else
-    // Berkley sockets for linux/mac
-    #define _XOPEN_SOURCE 700   // Needed to add this because VS code is not picking up addrinfo struct from netdb.h.
+    // Berkeley sockets for linux/mac
+    #define _XOPEN_SOURCE 700   // Needed to add this because VS code is not picking up addrinfo struct from 'netdb' header
     #include <sys/types.h>
     #include <sys/socket.h>
     #include <netinet/in.h>

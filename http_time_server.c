@@ -5,7 +5,7 @@
     // Windows socket headers
     #include <winsock2.h>
     #include <ws2tcpip.h>
-    #pragma comment(lib, "ws2_32.lib")      // If compiling using visual studio compiler
+    #pragma comment(lib, "ws2_32.lib")      // This tells the Microsoft Visual C complier to link your program against the Winsock library, "ws2_32.lib"                                            
 #else
     // Berkeley sockets for linux/mac
     #define _XOPEN_SOURCE 700   // Needed to add this because VS code is not picking up addrinfo struct from 'netdb' header

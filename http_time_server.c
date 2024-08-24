@@ -72,4 +72,34 @@ int main()
         fprintf(stderr, "socket() failed, (%d)\n", GETSOCKETERRNO());
         return 1;
     }
+
+    prinf("Binding socket to local address...\n");
+    if (bind(socket_listen, bind_address->ai_addr, bind_address->ai_addrlen))
+    {
+        fprintf(stderr, "bind() failed, (%d)\n", GETSOCKETERRNO());
+        return 1;
+    }
+
+    freeaddrinfo(bind_address);
+
+    printf("Listening...\n");
+    int backlog = 10;                               // Number of connections that are allowed to queue up
+    if (listen(socket_listen, backlog) < 0)
+    {
+        fprintf(stderr, "bind() failed (%d)\n", GETSOCKETERRNO());
+        return 1;
+    }
+
+    printf("Waiting for connection...\n");
+    struct sockaddr_storage client_address;
+    socklen_t client_len = sizeof(client_address);
+    SOCKET socket_client;
+    socket_client = accept(socket_listen, (struct sockaddr *)&client_address, &client_len);
+    if (!ISVALIDSOCKET(socket_client))
+    {
+        fprintf(stderr, "accept() failed (%d)\n", GETSOCKETERRNO());
+        return 1;
+    }
+
+    
 }

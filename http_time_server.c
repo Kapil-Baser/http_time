@@ -101,5 +101,25 @@ int main()
         return 1;
     }
 
+    printf("Client is connected...\n");
+    char address_buffer[INET6_ADDRSTRLEN];
+    getnameinfo((struct sockaddr *)&client_address, client_len, address_buffer, INET6_ADDRSTRLEN, 0, 0, NI_NUMERICHOST);
+    printf("%s\n", address_buffer);
+
+    printf("Reading request...\n");
+    char request[1024];
+    int bytes_received = recv(socket_client, request, 1024, 0);
+    // Specifying the number of bytes received to be printing using the ".*" precision specifier in printf
+    printf("%.*s", bytes_received, address_buffer);
+
+    printf("Responding...\n");
+    const char *response =
+        "HTTP/1.1 200 OK\r\n"
+        "Connection: close\r\n"
+        "Content-Type: text/plain\r\n\r\n"
+        "Local time is: ";
+    int response_len = strlen(response);
+    int bytes_sent = send(socket_client, response, response_len, 0);
+    prinf("Send %d of %d bytes.\n", bytes_sent, response_len);    
     
 }

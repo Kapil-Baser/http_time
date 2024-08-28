@@ -34,6 +34,9 @@
     #define GETSOCKETERRNO() (errno)
 #endif
 
+// Function prototype
+char *getTime();
+
 int main()
 {
     // First we must initialize the win socket if we are on windows system
@@ -121,5 +124,30 @@ int main()
     int response_len = strlen(response);
     int bytes_sent = send(socket_client, response, response_len, 0);
     prinf("Send %d of %d bytes.\n", bytes_sent, response_len);    
+
+    char *time_msg = getTime();
+    int time_len = strlen(time_msg);
+    bytes_sent = send(socket_client, time_msg, time_len, 0);
+    printf("Send %d bytes of %d\n", bytes_sent, time_len);
+
+    printf("Closing connection...\n");
+    CLOSESOCKET(socket_client);
+
+    printf("Closing listening socket...\n");
+    CLOSESOCKET(socket_listen);
+
+    // Win socket needs to be cleaned up by calling WSACleanup() before exiting the program
+    #if defined(_WIN32)
+    WSACleanup();
+    #endif
+
     
+}
+
+char *getTime()
+{
+    time_t timer;
+    time(&timer);
+    char *time_msg = ctime(&timer);             // Converts the time to printable string
+    return time_msg;
 }

@@ -62,7 +62,7 @@ int main()
     int retVal = getaddrinfo(0, "8080", &criteria, &bind_address);
     if (retVal != 0)
     {
-        fprintf(stderr, "getaddrinfo() failed", gai_strerror(retVal));
+        fprintf(stderr, "getaddrinfo() failed Error - %s", gai_strerror(retVal));
         return 1;
     }
     
@@ -76,7 +76,7 @@ int main()
         return 1;
     }
 
-    prinf("Binding socket to local address...\n");
+    printf("Binding socket to local address...\n");
     if (bind(socket_listen, bind_address->ai_addr, bind_address->ai_addrlen))
     {
         fprintf(stderr, "bind() failed, (%d)\n", GETSOCKETERRNO());
@@ -113,7 +113,7 @@ int main()
     char request[1024];
     int bytes_received = recv(socket_client, request, 1024, 0);
     // Specifying the number of bytes received to be printing using the ".*" precision specifier in printf
-    printf("%.*s", bytes_received, address_buffer);
+    printf("%.*s\n", bytes_received, address_buffer);
 
     printf("Responding...\n");
     const char *response =
@@ -123,12 +123,12 @@ int main()
         "Local time is: ";
     int response_len = strlen(response);
     int bytes_sent = send(socket_client, response, response_len, 0);
-    prinf("Send %d of %d bytes.\n", bytes_sent, response_len);    
+    printf("Send %d of %d bytes.\n", bytes_sent, response_len);    
 
     char *time_msg = getTime();
     int time_len = strlen(time_msg);
     bytes_sent = send(socket_client, time_msg, time_len, 0);
-    printf("Send %d bytes of %d\n", bytes_sent, time_len);
+    printf("Send %d of %d bytes.\n", bytes_sent, time_len);
 
     printf("Closing connection...\n");
     CLOSESOCKET(socket_client);
